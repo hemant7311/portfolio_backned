@@ -60,44 +60,41 @@ app.get("/api/projects", (req, res) => {
 ========================= */
 app.post("/api/send-email", async (req, res) => {
   try {
-    console.log("BODY RECEIVED:", req.body);
-
     const { name, email, subject, message } = req.body;
 
     if (!email || !message) {
       return res.status(400).json({
         ok: false,
-        received: req.body,
         error: "Email and message are required",
       });
     }
-
-    if (!process.env.MAIL || !process.env.PASS || !process.env.MAIL_TO) {
-      return res.status(500).json({
-        ok: false,
-        error: "Missing MAIL, PASS or MAIL_TO environment variables",
-      });
-    }
-
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.MAIL,
         pass: process.env.PASS,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
+    await transporter.verify();
+
     await transporter.sendMail({
-      from: process.env.MAIL,
+      from: `"Portfolio Contact" <${process.env.MAIL}>`,
       to: process.env.MAIL_TO,
       replyTo: email,
       subject: subject || "Portfolio Contact",
       html: `
-        <h3>New Message</h3>
-        <p><b>Name:</b> ${name || "N/A"}</p>
-        <p><b>Email:</b> ${email}</p>
-        <p><b>Subject:</b> ${subject || "N/A"}</p>
-        <p><b>Message:</b> ${message}</p>
+        <h2>New Portfolio Message</h2>
+        <p><strong>Name:</strong> ${name || "N/A"}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject || "N/A"}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
       `,
     });
 
@@ -112,7 +109,7 @@ app.post("/api/send-email", async (req, res) => {
     return res.status(500).json({
       ok: false,
       error: err.message,
-      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
+      code: err.code,
     });
   }
 });
