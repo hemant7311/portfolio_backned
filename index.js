@@ -60,12 +60,22 @@ app.get("/api/projects", (req, res) => {
 ========================= */
 app.post("/api/send-email", async (req, res) => {
   try {
+    console.log("BODY RECEIVED:", req.body);
+
     const { name, email, subject, message } = req.body;
 
     if (!email || !message) {
       return res.status(400).json({
         ok: false,
+        received: req.body,
         error: "Email and message are required",
+      });
+    }
+
+    if (!process.env.MAIL || !process.env.PASS || !process.env.MAIL_TO) {
+      return res.status(500).json({
+        ok: false,
+        error: "Missing MAIL, PASS or MAIL_TO environment variables",
       });
     }
 
@@ -86,11 +96,12 @@ app.post("/api/send-email", async (req, res) => {
         <h3>New Message</h3>
         <p><b>Name:</b> ${name || "N/A"}</p>
         <p><b>Email:</b> ${email}</p>
+        <p><b>Subject:</b> ${subject || "N/A"}</p>
         <p><b>Message:</b> ${message}</p>
       `,
     });
 
-    res.json({
+    return res.status(200).json({
       ok: true,
       message: "Email sent successfully",
     });
@@ -98,9 +109,10 @@ app.post("/api/send-email", async (req, res) => {
   } catch (err) {
     console.error("MAIL ERROR:", err);
 
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: err.message,
+      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
     });
   }
 });
