@@ -1,4 +1,6 @@
-require("dotenv").config();
+const path = require("path");
+
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const express = require("express");
 const cors = require("cors");
@@ -79,6 +81,13 @@ app.get("/api/bio", (req, res) => {
 
 app.get("/api/projects", (req, res) => {
   res.json(projects);
+});
+
+app.get("/api/send-email", (req, res) => {
+  res.status(405).json({
+    ok: false,
+    error: "Use POST /api/send-email to send a message.",
+  });
 });
 
 app.post("/api/send-email", async (req, res) => {
