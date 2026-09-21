@@ -4,19 +4,18 @@ const Bio = {
   name: "Hemant Rathore",
   roles: [
     "Full Stack Developer",
-    "Android Developer",
-    "UI/UX Designer",
-    "Programmer",
+    "Digital Marketer",
+    "App Developer",
+    "Shopify Specialist",
   ],
   description:
-    "I am a motivated and versatile individual, always eager to take on new challenges. With a passion for learning I am dedicated to delivering high-quality results. With a positive attitude and a growth mindset, I am ready to make a meaningful contribution and achieve great things.",
-  github: "https://github.com/rishavchanda",
-  resume:
-    "https://drive.google.com/file/d/1ffZrcMcn8UatXGIaautbbqpV7ADNaETA/view?usp=sharing",
+    "Hi, I'm Hemant Rathore. I'm a Full Stack Developer and Digital Marketer based in Noida. I build websites, web applications, mobile apps and Shopify stores.",
+  github: "https://github.com/hemant7311",
+  resume: "https://drive.google.com/file/d/1NBwQhw4-ghwc3B1r_U6ce1DLoykAVn1H/view?usp=sharing",
   linkedin: "https://www.linkedin.com/in/hemant-rathore-developer/",
-  twitter: "https://twitter.com/RishavChanda",
-  insta: "https://www.instagram.com/rishav_chanda/",
-  facebook: "https://www.facebook.com/rishav.chanda.165/",
+  twitter: "https://twitter.com/hemantrathore",
+  insta: "https://www.instagram.com/buildbyhemant/",
+  facebook: "https://www.facebook.com/profile.php?id=61593364824396",
 };
 
 // Import the projects array directly from the frontend constants file is not reliable in Node.
